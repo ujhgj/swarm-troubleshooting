@@ -18,6 +18,7 @@ services:
     ports:
       - published: 80
         target: 80
+        mode: host
     volumes:
       - sock:/var/run
     configs:

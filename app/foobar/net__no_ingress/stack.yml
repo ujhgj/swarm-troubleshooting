@@ -18,8 +18,7 @@ services:
     ports:
       - published: 80
         target: 80
-    volumes:
-      - sock:/var/run
+        mode: host
     configs:
       - source: nginx_config
         target: /etc/nginx/conf.d/default.conf
@@ -29,12 +28,11 @@ services:
 
   php-fpm:
     image: php:7.3-fpm-alpine
-    volumes:
-      - sock:/var/run
     configs:
       - source: php_fpm_config
         target: /usr/local/etc/php-fpm.d/zz-docker.conf
       - source: php_sources
         target: /opt/app/index.php
     deploy:
-      mode: global
+      mode: replicated
+      replicas: 3
