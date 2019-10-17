@@ -1,0 +1,41 @@
+version: "3.7"
+
+volumes:
+  sock:
+    name: sock
+
+configs:
+  nginx_config:
+    file: ./nginx.conf
+  php_fpm_config:
+    file: ./php-fpm.conf
+  php_sources:
+    file: ./source.php
+
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - published: 80
+        target: 80
+        mode: host
+    volumes:
+      - sock:/var/run
+    configs:
+      - source: nginx_config
+        target: /etc/nginx/conf.d/default.conf
+    deploy:
+      mode: replicated
+      replicas: 3
+
+  php-fpm:
+    image: php:7.3-fpm-alpine
+    volumes:
+      - sock:/var/run
+    configs:
+      - source: php_fpm_config
+        target: /usr/local/etc/php-fpm.d/zz-docker.conf
+      - source: php_sources
+        target: /opt/app/index.php
+    deploy:
+      mode: global
