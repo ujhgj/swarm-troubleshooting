@@ -1,3 +1,3 @@
 <?php
 
-echo 'php-fpm works through NETWORK socket';
+echo 'NGINX '.$_SERVER['NGINX_VERSION'] . ' PHP ' . $_SERVER['PHP_VERSION'];
